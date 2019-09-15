@@ -29,5 +29,7 @@ export default function (Vue, { router, head, isClient }) {
 
     Vue.component('fa', FontAwesomeIcon)
 
-    AOS.init()
+    if (isClient) {
+        AOS.init()
+    }
 }
