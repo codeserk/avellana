@@ -47,10 +47,10 @@
         class="lightbox-image object-cover object-center"
       /> -->
 
-    <g-image
+    <!-- <g-image
       :src="currentImage.src"
       class="h-full w-auto object-center object-contain z-50"
-    />
+    /> -->
     <!-- <agile
       :options="{
         dots: true,
@@ -129,6 +129,7 @@ export default {
       return this.gallery.map(item => ({
           id: item.id,
           src: item.src.src,
+          msrc: item.src.src,
           thumbnail: item.src.src,
           w: item.src.size.width,
           h: item.src.size.height,

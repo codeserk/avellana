@@ -89,9 +89,6 @@
     import PhotoSwipe from 'photoswipe/dist/photoswipe'
     import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default'
 
-    import 'photoswipe/dist/photoswipe.css'
-    import 'photoswipe/dist/default-skin/default-skin.css'
-
     export default {
         props: {
             images: {
@@ -202,7 +199,6 @@
             },
 
             scrollPrimaryTo (index) {
-                console.log('scrolling to', index)
                 if (!this.$refs.slider) {
                     return
                 }
@@ -242,7 +238,12 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+    $pswp__assets-path: "~photoswipe/src/css/default-skin/";
+
+    @import "photoswipe/src/css/main.scss";
+    @import "photoswipe/src/css/default-skin/default-skin.scss";
+
     .slider {
         display: flex;
         overflow-x: auto;
