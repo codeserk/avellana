@@ -1,0 +1,247 @@
+- AOS - stuff animated when revealed https://michalsnik.github.io/aos/
+- Check this, maybe somewhere? https://tailwindcomponents.com/component/commerce-app-card
+- Parallax => https://codepen.io/codetimeio/pen/mGxvXd?editors=1100/?theme-id=0&default-tab=html,result&embed-version=2
+[x]
+☐ Project
+# project
+
+
+---- Solution with slick
+<template>
+  <div class="main overflow-hidden">
+    <div class="flex flex-wrap mt-6 container mx-auto">
+      <div class="w-full sm:w-1/2 md:w-2/5 sm:px-6 mb-12">
+        <agile
+          ref="slides"
+
+          :options="{
+            dots: false,
+            fade: true,
+            navButtons: false
+          }"
+          class="slides w-full mb-1"
+          @afterChange="changed"
+        >
+          <div
+            v-for="(image, index) in gallery" :key="image.id"
+            class="slide" :class="`slide--${index}`"
+            @click="selectImage(image.id)"
+          >
+            <g-image
+              :src="image.src"
+              class="w-full h-full object-cover object-center"
+            />
+          </div>
+        </agile>
+
+        <agile
+          ref="thumbnails"
+
+          :options="{
+            centerMode: true,
+            dots: false,
+            navButtons: false,
+            slidesToShow: 2,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+              ]
+          }"
+          class="thumbnails h-42"
+        >
+          <div
+            v-for="(image, index) in galleryWithoutCurrent" :key="image.id"
+            :class="`slide--${index}`" class="slide h-full"
+            @click="$refs.thumbnails.goTo(index)"
+          >
+            <g-image
+              :src="image.src"
+              class="h-full w-full object-cover object-center"
+            />
+          </div>
+        </agile>
+      </div>
+
+      <div class="w-full sm:w-1/2 md:w-3/5 px-2">
+        <h1 v-text="$page.product.name" />
+        <p class="mb-4 text-lg" data-aos="fade-left" v-html="$page.product.description" />
+      </div>
+    </div>
+    <div class="font-serif leading-normal mx-auto py-12 px-4 max-w-lg">
+
+      <p class="mb-4 text-lg">Quae commodi reiciendis dignissimos. Rerum molestiae hic dolores assumenda dolor! Corrupti reiciendis maxime fuga, recusandae obcaecati officia cum temporibus dicta quibusdam praesentium, magni, cumque aperiam iusto sequi illum molestiae non.</p>
+      <p class="mb-4 text-lg">In excepturi repellendus eum, qui corrupti rerum perferendis harum adipisci voluptate? Nihil, quidem deleniti libero officia dicta vel asperiores velit molestiae blanditiis, dolore voluptatibus excepturi laudantium at veniam illo. Dolor!</p>
+      <p class="mb-4 text-lg">Neque laudantium minus doloremque id quas quod sint velit corporis unde dolore accusantium delectus optio consequuntur voluptatem sapiente odit dolorum minima harum tenetur, dolor provident reprehenderit. Ex eum provident harum?</p>
+      <p class="mb-4 text-lg">Mollitia temporibus maxime placeat culpa distinctio possimus, praesentium, assumenda quasi eum voluptate magni aspernatur aperiam. Eius voluptates rem eum, facilis inventore hic provident pariatur nam non! At odit iste cum.</p>
+      <p class="mb-4 text-lg">Cumque voluptatibus laboriosam tempore architecto laudantium sint vitae cupiditate voluptate quod tempora saepe odio quasi dolores possimus non totam unde voluptates corrupti, ducimus ipsa enim officiis ipsum maxime eveniet. Aut!</p>
+      <p class="mb-4 text-lg">Maxime facere ut natus libero incidunt alias quam consectetur, nisi delectus exercitationem ab qui perferendis dolorem sequi veritatis nobis eius quas dolore ducimus atque vel. Doloribus mollitia non pariatur modi?</p>
+      <p class="mb-4 text-lg">Sed in amet a neque, delectus, cupiditate ab assumenda quidem facere molestias vitae itaque soluta reprehenderit dolorem. Deserunt quibusdam, consequatur veniam fugiat ipsam aliquam ea possimus quis officiis enim dolores.</p>
+      <p class="mb-4 text-lg">Exercitationem aperiam veniam perspiciatis iure ad nobis necessitatibus cumque cupiditate obcaecati natus. Neque nostrum maxime id veritatis tempore, a voluptate voluptatem et! A ullam id aliquam? Recusandae deleniti odit fugit!</p>
+      <p class="mb-4 text-lg">Beatae rerum obcaecati consectetur nostrum eos ipsam, accusamus delectus ex maxime neque sit quod repellendus voluptate sunt dolore hic explicabo ea dolorum vero vel quidem illo! Cupiditate sed voluptatibus ullam?</p>
+      <p class="mb-4 text-lg">Modi aliquam facilis adipisci! Soluta eveniet eos omnis, inventore nesciunt, laborum deserunt blanditiis nihil accusamus debitis voluptatibus possimus dolores vero maiores, sed voluptate ut! Facilis possimus vitae consectetur praesentium veritatis.</p>
+      <p class="mb-4 text-lg">Tempore, quaerat accusamus ad nostrum maiores numquam, ea nam sed reiciendis, eveniet perspiciatis. Eos nulla vel consectetur quo nesciunt aspernatur sint nemo cumque optio mollitia, veritatis, tenetur quibusdam eum natus.</p>
+    </div>
+
+    <div class="bg-quote container flex items-center justify-center h-screen mx-auto">
+      <blockquote class="bg-black font-serif mx-4 p-4 text-center text-white md:p-8">
+        <p class="font-bold italic text-3xl">
+          &ldquo;Large, bold pull quote. Hats. Very good.&rdquo;
+        </p>
+      </blockquote>
+    </div>
+
+    <div class="font-serif leading-normal mx-auto py-12 px-4 max-w-lg">
+      <p class="mb-4 text-lg">Quae commodi reiciendis dignissimos. Rerum molestiae hic dolores assumenda dolor! Corrupti reiciendis maxime fuga, recusandae obcaecati officia cum temporibus dicta quibusdam praesentium, magni, cumque aperiam iusto sequi illum molestiae non.</p>
+      <p class="mb-4 text-lg">In excepturi repellendus eum, qui corrupti rerum perferendis harum adipisci voluptate? Nihil, quidem deleniti libero officia dicta vel asperiores velit molestiae blanditiis, dolore voluptatibus excepturi laudantium at veniam illo. Dolor!</p>
+      <p class="mb-4 text-lg">Neque laudantium minus doloremque id quas quod sint velit corporis unde dolore accusantium delectus optio consequuntur voluptatem sapiente odit dolorum minima harum tenetur, dolor provident reprehenderit. Ex eum provident harum?</p>
+      <p class="mb-4 text-lg">Mollitia temporibus maxime placeat culpa distinctio possimus, praesentium, assumenda quasi eum voluptate magni aspernatur aperiam. Eius voluptates rem eum, facilis inventore hic provident pariatur nam non! At odit iste cum.</p>
+    </div>
+
+  <div class="modal fixed w-full h-full top-0 left-0" v-if="false">
+    <div class="modal-overlay absolute w-full h-full bg-black opacity-gray-100 opacity-50 z-40"></div>
+
+    <div class="modal-container bg-white h-4/6 mx-auto rounded shadow-lg z-50 overflow-y-auto bg-transparent">
+      <!-- <g-image
+        :src="currentImage.src"
+        class="lightbox-image object-cover object-center"
+      /> -->
+
+      <agile
+        :options="{
+          dots: true,
+          fade: false,
+          navButtons: true,
+        }"
+        class="lightbox-slides w-full mb-1"
+      >
+        <div
+          v-for="(image, index) in $page.product.gallery" :key="image.id"
+          class="slide flex justify-center  align-center object-center" :class="`slide--${index}`"
+        >
+          <g-image
+            :src="image.src"
+            class="h-full object-contain object-center"
+          />
+        </div>
+      </agile>
+
+      <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50" @click="imageIndex = null">
+        <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+          <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+        </svg>
+        <span class="text-sm">(Esc)</span>
+      </div>
+
+      <!-- Add margin if you want to see some of the overlay behind the modal-->
+
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<page-query>
+query Product ($path: String) {
+  product (path: $path) {
+    name
+    description
+
+    featuredImage {
+      src
+    }
+  	gallery {
+      id
+      src
+      path
+    }
+  }
+}
+</page-query>
+
+<script>
+import Post from '~/components/Post.vue'
+
+export default {
+  components: {
+    Post
+  },
+
+  data: () => ({
+    slidesNav: [],
+    thumbnailsNav: [],
+    imageIndex: null,
+
+    currentSlide: 0,
+  }),
+
+  computed: {
+    gallery () {
+      return this.$page.product.gallery
+    },
+
+    currentImage () {
+      if (!this.gallery || this.currentSlide === undefined) {
+        return
+      }
+
+      return this.gallery[this.currentSlide]
+    },
+
+    galleryWithoutCurrent () {
+      if (!this.gallery) {
+        return []
+      }
+      if (!this.currentImage) {
+        return this.gallery
+      }
+
+      return this.gallery.filter(image => image.id !== this.currentImage.id)
+    },
+  },
+
+  mounted () {
+    this.slidesNav.push(this.$refs.thumbnails)
+    this.thumbnailsNav.push(this.$refs.slides)
+  },
+
+  metaInfo () {
+    return {
+      title: this.$page.product.name
+    }
+  },
+
+  methods: {
+    selectImage (index) {
+      this.imageIndex = index
+    },
+
+    changed ({ currentSlide }) {
+      this.currentSlide = currentSlide
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.agile.thumbnails {
+	margin: 0 -2px !important;
+	width: calc(100% + 4px) !important;
+
+  .slide {
+    padding: 0 2px !important;
+  }
+}
+
+// .lightbox-slides {
+//   position: absolute;
+//   z-index: 40;
+//   left: 50%;
+//   top: 50%;
+//   transform: translate3d(-50%, -50%, 0);
+//   object-position: center;
+// }
+</style>
