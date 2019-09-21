@@ -24,7 +24,6 @@ query Category ($path: String, $page: Int) {
           ... on WordPressPost {
             id
             title
-            path
             excerpt
         	}
         }

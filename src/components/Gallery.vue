@@ -11,12 +11,9 @@
         >
             <figure
                 v-for="(item, index) in images" :key="index"
-                :src="item.src"
                 @click="zoomImage(index)"
             >
-                <!-- <a :href="item.src" itemprop="contentUrl" :data-size="'' + item.w + 'x' + item.h" :title="item.title"> -->
-                    <g-image :src="item.thumbnail" :alt="item.alt" itemprop="thumbnail"/>
-                <!-- </a> -->
+                <g-image :src="item.thumbnail" :alt="item.alt"/>
             </figure>
         </div>
 
@@ -32,9 +29,7 @@
                 v-for="(item, index) in slicedGallery" :key="index"
                 @click="scrollPrimaryTo((index + 1) % images.length)"
             >
-                <!-- <a :href="item.src" itemprop="contentUrl" :data-size="'' + item.w + 'x' + item.h" :title="item.title"> -->
-                    <g-image class="object-center" :src="item.thumbnail" :alt="item.alt" />
-                <!-- </a> -->
+                <g-image class="object-center" :src="item.thumbnail" :alt="item.alt" with="200" />
             </div>
         </div>
 
@@ -176,7 +171,13 @@
                 this.photoSwipe = new PhotoSwipe(
                     this.$refs.photoSwipe,
                     PhotoSwipeUI_Default,
-                    this.images, {
+                    this.images.map(image => ({
+                        src: image.src.src,
+                        msrc: image.src.src,
+                        w: image.src.size.width,
+                        h: image.src.size.height,
+                        title: 'Will be used for caption'
+                    })), {
                         index,
                         history: false,
                         closeOnScroll: false,

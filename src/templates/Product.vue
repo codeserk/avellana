@@ -6,7 +6,7 @@
       </div>
 
       <div class="w-full sm:w-1/2 md:w-3/5 px-2">
-        <h1 v-text="$page.product.name" />
+        <h1 class="text-xl font-serif" v-text="$page.product.name" />
         <p class="mb-4 text-lg" data-aos="fade-left" v-html="$page.product.description" />
       </div>
     </div>
@@ -96,7 +96,6 @@ query Product ($path: String) {
   	gallery {
       id
       src
-      path
     }
   }
 }
@@ -128,9 +127,9 @@ export default {
     swipeGalleryItems () {
       return this.gallery.map(item => ({
           id: item.id,
-          src: item.src.src,
-          msrc: item.src.src,
-          thumbnail: item.src.src,
+          src: item.src,
+          msrc: item.src,
+          thumbnail: item.src,
           w: item.src.size.width,
           h: item.src.size.height,
           title: 'Will be used for caption'

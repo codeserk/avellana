@@ -42,11 +42,11 @@ module.exports = {
                 key: 'ck_7614a3eed13534b0e07689a05c73558bb10d5c30',
                 secret: 'cs_b78aeb2f1a80832a93a38906a7e5b2d30b966c71',
 
-                routes: {
-                    product: '/productos/:slug',
-                    product_category: '/categorias/:slug',
-                    product_tag: '/etiquetas/:slug',
-                }
+                // routes: {
+                //     product: '/productos/:slug',
+                //     product_category: '/categorias/:slug',
+                //     product_tag: '/etiquetas/:slug',
+                // }
             }
         },
         {
@@ -64,6 +64,10 @@ module.exports = {
             }
         },
     ],
+
+    templates: {
+        Product: '/productos/:slug'
+    },
 
     chainWebpack (config) {
         // Load variables for all vue-files

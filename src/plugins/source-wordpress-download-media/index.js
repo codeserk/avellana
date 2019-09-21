@@ -27,13 +27,14 @@ class WordPressDownloadMedia {
         this.createDirectory(this.options.downloadFolder)
 
         api.loadSource(async store => {
-            const mediaType = store.getContentType('WordPressAttachment')
+            const mediaType = store.getCollection('WordPressAttachment')
             const media = mediaType.findNodes()
 
             const bar = new progress.SingleBar({
                 barCompleteChar: '\u2588',
                 barIncompleteChar: '\u2591',
                 linewrap: true,
+                stopOnComplete: true,
             })
             bar.start(media.length)
 

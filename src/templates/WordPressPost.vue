@@ -42,7 +42,6 @@ query Post ($path: String!) {
     categories {
       id
       title
-      path
     }
     tags {
       id

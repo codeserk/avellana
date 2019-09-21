@@ -1,6 +1,6 @@
 module.exports = function (api) {
     api.loadSource(store => {
-        const posts = store.addContentType('WordPressPost')
+        const posts = store.addCollection('WordPressPost')
 
         posts.addSchemaField('stringIndex', ({ graphql }) => ({
             type: graphql.GraphQLString,

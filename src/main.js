@@ -28,6 +28,8 @@ import App from '~/components/App'
 export default function (Vue, { router, head, isClient, appOptions }) {
     appOptions.render = h => h(App);
 
+
+
     // Set default layout as a global component
     // Vue.component('Layout', DefaultLayout)
     // Vue.use(VueAgile)

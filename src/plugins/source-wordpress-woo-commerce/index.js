@@ -59,7 +59,7 @@ class WordpressWooCommerceSource {
             await this.getCategories(store)
             await this.getTags(store)
 
-            const categories = store.getContentType(this.getTypeName('ProductCategory'))
+            const categories = store.getCollection(this.getTypeName('ProductCategory'))
                 .findNodes()
                 .reduce((result, category) => {
                     result[category.id] = category
@@ -75,7 +75,7 @@ class WordpressWooCommerceSource {
     async getCategories (store) {
         const typeName = this.getTypeName('ProductCategory')
         // Add content type
-        const categories = store.addContentType({
+        const categories = store.addCollection({
             typeName,
             route: this.routes.product_category,
         })
@@ -96,7 +96,7 @@ class WordpressWooCommerceSource {
     async getTags (store) {
         const typeName = this.getTypeName('ProductTag')
         // Add content type
-        const tags = store.addContentType({
+        const tags = store.addCollection({
             typeName,
             route: this.routes.product_tag,
         })
@@ -117,7 +117,7 @@ class WordpressWooCommerceSource {
     async getProducts (store, categories) {
         // Add content type
         const typeName = this.getTypeName('Product')
-        const products = store.addContentType({
+        const products = store.addCollection({
             typeName,
             route: this.routes.product,
         })
@@ -193,7 +193,7 @@ class WordpressWooCommerceSource {
     }
 
     async addCategoryBreadcrumbs(store, categories) {
-        const categoryType = store.getContentType(this.getTypeName('ProductCategory'))
+        const categoryType = store.getCollection(this.getTypeName('ProductCategory'))
         for (const id in categories) {
             const category = categories[id]
             const hierarchy = this.getCategoryHierarchy(category, categories)
