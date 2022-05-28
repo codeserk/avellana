@@ -1,13 +1,13 @@
 <template>
   <div class="main overflow-hidden">
     <div class="flex flex-wrap sm:mt-6 container mx-auto">
-      <div class="w-full sm:w-1/2 md:w-2/5 sm:px-6 mb-2">
-        <gallery :images="swipeGalleryItems" />
+      <div class="w-full sm:w-1/2 md:w-2/5 sm:px-6 mb-2 md:-ml-6">
+        <gallery :images="swipeGalleryItems" with-secondary />
       </div>
 
-      <div class="w-full sm:w-1/2 md:w-3/5 px-2">
-        <h1 class="text-xl font-serif" v-text="$page.product.name" />
-        <p class="mb-4 text-lg" data-aos="fade-left" v-html="$page.product.description" />
+      <div class="w-full sm:w-1/2 md:w-3/5 px-2 md:-mr-6">
+        <h1 class="text-3xl font-serif mb-4" v-text="$page.product.name" />
+        <p class="content mb-4 text-lg" data-aos="fade-left" v-html="$page.product.description" />
       </div>
     </div>
     <div class="font-serif leading-normal mx-auto py-12 px-4 max-w-lg">

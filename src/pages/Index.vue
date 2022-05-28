@@ -1,111 +1,118 @@
 <template>
-  <div>
-    <header class="">
-      <!-- <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6 mb-6">
-        <div class="flex items-center flex-shrink-0 text-white mr-6">
-          <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
-          <span class="font-semibold text-xl tracking-tight">Avellana</span>
-        </div>
-        <div class="block lg:hidden">
-          <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-          </button>
-        </div>
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <div class="text-sm lg:flex-grow">
-            <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              Docs
-            </a>
-            <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              Examples
-            </a>
-            <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-              Blog
-            </a>
-          </div>
-          <div>
-            <a href="#" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a>
-          </div>
-        </div>
-      </nav> -->
-    </header>
-    <div class="container mx-auto">
-      <div class="flex content-between flex-wrap">
-        <div
-          v-for="{ product } in $page.products.edges" :key="product.name"
-          class="xs:w-auto sm:w-1/2 md:w-1/3 py-2 sm:px-2"
-        >
-          <div class="rounded shadow-lg">
-            <g-link :to="product.path">
-              <g-image class="w-full" :src="product.images[0].src" alt="Sunset in the mountains" />
-            </g-link>
-            <div class="px-6 py-4">
-              <div class="font-bold text-xl mb-2" v-text="product.name" />
-              <p class="text-gray-700 text-base h-24 ellipsis" v-html="product.description" />
-            </div>
-            <div class="px-6 py-4">
-              <g-link
-                v-for="tag in product.tags" :key="tag.id"
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-                :to="tag.path"
-              >
-                <span v-text="tag.name"/>
-              </g-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <main class="home">
+        <home-slider :slides="$page.home.acf.slides" />
+
+        <home-sections :sections="$page.home.acf.sections" />
+
+        <component
+            v-for="(featured, index) in $page.home.acf.featured" :key="index"
+            :is="getFeaturedTemplate(featured.acfFcLayout)" v-bind="featured"
+        />
+    </main>
 </template>
 
 <page-query>
 query Home ($page: Int) {
-  products: allProduct (page: $page, perPage: 10) @paginate {
-    pageInfo {
-      totalPages
-      currentPage
-    }
-    edges {
-      product: node {
-        name
-        path
-        description
-        images {
-          src
+    home: wordPressPage(path:"/home") {
+        acf {
+            slides {
+                image {
+                   src(width: 600, fit: inside)
+                }
+                description
+                link {
+                    title
+                    url
+                }
+            }
+
+            sections {
+                title
+                image {
+                    src(width: 640, height: 640, fit: contain, background: "#F7FAFC")
+                }
+                link {
+                    title
+                    url
+                }
+            }
+
+            featured {
+                acfFcLayout
+                direction
+                name
+                image {
+                    src(width: 640, height: 640, fit: contain, background: "#F7FAFC")
+                }
+                description
+                link {
+                    title
+                    url
+                }
+            }
         }
-        tags {
-          id
-          name
-          path
-        }
-      }
     }
-  }
+    products: allProduct (page: $page, perPage: 10) @paginate {
+        pageInfo {
+            totalPages
+            currentPage
+        }
+        edges {
+            product: node {
+                name
+                path
+                description
+                images {
+                    id
+                    src
+                }
+                gallery {
+                    src
+                }
+                tags {
+                    id
+                    name
+                    path
+                }
+            }
+        }
+    }
 }
 </page-query>
 
 <script>
-import { Pager } from 'gridsome'
-import Post from '~/components/Post.vue'
-import Layout from '~/layouts/Default.vue'
+import Post from "~/components/Post.vue";
+import Layout from "~/layouts/Default.vue";
+import Gallery from "~/components/Gallery.vue";
+
+import HomeSlider from '~/components/Home/HomeSlider.vue'
+import HomeSections from '~/components/Home/HomeSections.vue'
+import HomeFeaturedProductType from '~/components/Home/HomeFeaturedProductType'
+
+const featuredMap = {
+    product_type: HomeFeaturedProductType
+}
 
 export default {
-  components: {
-    Layout,
+    components: {
+        Layout,
+        HomeSlider,
+        HomeSections,
 
-    Pager,
-    Post
-  },
-  metaInfo: {
-    title: 'Welcome to my blog :)'
-  }
-}
+        // Featured
+        HomeFeaturedProductType,
+
+        Gallery,
+        Post
+    },
+    metaInfo: {
+        title: "Welcome to my blog :)"
+    },
+
+    methods: {
+        getFeaturedTemplate(name) {
+            return featuredMap[name]
+        }
+    }
+};
 </script>
-
-<style>
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>

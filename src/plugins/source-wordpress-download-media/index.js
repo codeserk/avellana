@@ -62,7 +62,6 @@ class WordPressDownloadMedia {
                 )
             }, Promise.resolve())
 
-
             console.log('Optimizing media...')
         })
     }

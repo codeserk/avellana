@@ -1,15 +1,26 @@
 <template>
     <div id="app">
+        <web-header />
+
         <transition name="slide-fade" appear >
             <router-view
                 :key="$route.path"
             />
         </transition>
+
+        <web-footer />
     </div>
 </template>
 
 <script>
+    import WebHeader from './parts/WebHeader'
+    import WebFooter from './parts/WebFooter'
+
     export default {
+        components: {
+            WebHeader,
+            WebFooter,
+        }
     }
 </script>
 

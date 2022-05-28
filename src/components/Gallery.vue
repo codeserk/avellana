@@ -18,6 +18,7 @@
         </div>
 
         <div
+            v-if="withSecondary"
             class="secondary hidden sm:flex w:1/2 md:1/3"
             ref="secondary"
             @mousedown="startScrolling('secondary')"
@@ -89,6 +90,11 @@
             images: {
                 type: Array,
                 default: () => []
+            },
+
+            withSecondary: {
+                type: Boolean,
+                default: false,
             }
         },
 

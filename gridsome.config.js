@@ -66,7 +66,7 @@ module.exports = {
     ],
 
     templates: {
-        Product: '/productos/:slug'
+        Product: '/producto/:slug'
     },
 
     chainWebpack (config) {
