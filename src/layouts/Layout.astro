@@ -1,0 +1,387 @@
+---
+import '~/assets/style/border-radius.css'
+import '~/assets/style/content.css'
+import '~/assets/style/tooltip.css'
+
+import { ClientRouter } from 'astro:transitions'
+
+import Background from '~/components/Layout/Background.astro'
+import Footer from '~/components/Layout/Footer.astro'
+import SEO from '~/components/Layout/SEO.astro'
+import SocialLinks from '~/components/Layout/SocialLinks.astro'
+import type { SEOParams } from '~/utils/seo'
+
+interface Props {
+  readonly title?: string
+  readonly full?: boolean
+  readonly overlay?: boolean
+  readonly seo?: SEOParams
+}
+
+const { seo } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <ClientRouter />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SEO params={seo} />
+
+    <meta http-equiv="refresh" content="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="preload" href="/fonts/CompassGold.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/DOS.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/og-dcm-emoji.ttf" as="font" type="font/ttf" crossorigin />
+    <script defer data-domain="codeserk.es" src="https://plausible.io/js/script.js"></script>
+  </head>
+  <body>
+    <Background color="#ff4466" />
+    <SocialLinks absolute />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer />
+
+    <style is:global>
+      @font-face {
+        font-weight: normal;
+        font-style: normal;
+        font-family: 'CompassGoldTitle';
+        src: url('/fonts/CompassGold.woff') format('woff');
+        font-display: block;
+      }
+
+      @font-face {
+        font-weight: normal;
+        font-style: normal;
+        font-family: 'CompassGold';
+        size-adjust: 130%;
+        src: url('/fonts/CompassGold.woff') format('woff');
+        font-display: block;
+      }
+      @font-face {
+        font-weight: normal;
+        font-style: normal;
+        font-family: 'DOS';
+        src: url('/fonts/DOS.woff') format('woff');
+        font-display: block;
+      }
+      @font-face {
+        font-family: og-emoji;
+        src: url('/fonts/og-dcm-emoji.ttf');
+        size-adjust: 90%;
+        font-display: block;
+      }
+
+      :root {
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
+        --font-heading-no-scale: 'CompassGoldTitle', 'DOS', og-emoji, monospace;
+        --font-heading: 'CompassGold', 'DOS', og-emoji, monospace;
+        --font-body: 'CompassGold', 'DOS', og-emoji, monospace;
+        --font-code: 'DOS', og-emoji, monospace;
+        --color-header: #fff0f9;
+      }
+
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        html {
+          color-scheme: dark;
+        }
+      }
+
+      body {
+        font-family: var(--font-body);
+      }
+
+      body.transition {
+        footer {
+          opacity: 0;
+        }
+      }
+
+      body {
+        font-size: 20px;
+      }
+
+      @media only print {
+        .web-only {
+          display: none;
+        }
+      }
+
+      .page-wrapper {
+        position: relative;
+        display: block;
+        align-items: center;
+        width: 100%;
+        padding: 4rem 0;
+        color: white;
+
+        &.full {
+          min-height: 100vh;
+        }
+        &.color {
+          background: #08080eaa;
+        }
+
+        &.limited {
+          max-width: 600px;
+        }
+      }
+
+      hr {
+        margin: 1em 0;
+        border-width: 2px;
+      }
+
+      .skew,
+      .skew-left {
+        transform: skewY(-2deg);
+        transform-origin: top right;
+      }
+      .skew-right {
+        transform: skewY(2deg);
+        transform-origin: top left;
+      }
+
+      body {
+        overflow: overlay;
+        overflow-x: hidden;
+        background-color: #08080e;
+        font-size: 24px;
+        font-family: var(--font-body);
+        overflow-wrap: break-word;
+        hyphens: none;
+        /* line-height: 1.1em; */
+      }
+      .hypens {
+        hyphens: auto;
+      }
+
+      *::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        border-radius: 0;
+      }
+
+      *::-webkit-scrollbar-thumb {
+        background: white;
+        border-radius: 0;
+      }
+
+      *::-webkit-scrollbar-track {
+        background: #08080eff;
+        border-radius: 0;
+      }
+
+      .font-header {
+        font-family: var(--font-heading);
+      }
+
+      /* .container {
+        @media (min-width: 640px) {
+          padding-right: 24px;
+          padding-left: 24px;
+        }
+      } */
+
+      .page {
+        min-height: calc(100vh - 400px - 100px);
+      }
+
+      .page-enter-active {
+        transition: all 0.3s 0.3s ease-in-out;
+      }
+
+      .page-leave-active {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .page-enter,
+      .page-leave-to {
+        opacity: 0;
+        transform: translateX(10px);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        font-family: var(--font-heading);
+        line-height: 1em;
+      }
+
+      .link {
+        position: relative;
+        outline: none !important;
+
+        &:hover::before,
+        &.active::before {
+          display: block;
+        }
+      }
+
+      img {
+        pointer-events: none;
+        user-select: none !important;
+      }
+
+      nav.px-mobile,
+      p.px-mobile,
+      div.px-mobile {
+        @media (max-width: 640px) {
+          padding-right: 0.5rem;
+          padding-left: 0.5rem;
+
+          p.px-mobile,
+          div.px-mobile {
+            padding-right: 0;
+            padding-left: 0;
+          }
+        }
+      }
+
+      .pswp__bg {
+        background-color: white;
+      }
+
+      /* @media (min-width: 640px) {
+        .container {
+          padding-right: 48px;
+          padding-left: 48px;
+        }
+      } */
+
+      .green {
+        color: #00e232;
+      }
+      .red {
+        color: #ff004d;
+      }
+      .yellow {
+        color: #ffe727;
+      }
+
+      .wrapper {
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .list-item {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .list-enter-active,
+      .list-leave-active {
+        transition: all 1s;
+      }
+      .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .slide-left-enter-active,
+      .slide-left-leave-active,
+      .slide-right-enter-active,
+      .slide-right-leave-active {
+        overflow: hidden;
+        transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+        transition-duration: 0.5s;
+        transition-property: height, opacity, transform;
+      }
+
+      .slide-left-enter,
+      .slide-right-leave-active {
+        opacity: 0;
+        transform: translate(2em, 0);
+      }
+
+      .slide-left-leave-active,
+      .slide-right-enter {
+        opacity: 0;
+        transform: translate(-2em, 0);
+      }
+
+      .more-container {
+        margin-top: 1em;
+        text-align: center;
+      }
+
+      @media (min-width: 640px) {
+        .header {
+          font-size: 7vw;
+        }
+      }
+
+      @media (min-width: 1500px) {
+        .header {
+          font-size: 7em;
+        }
+      }
+
+      @keyframes header-color {
+        0% {
+          color: white;
+        }
+        100% {
+          color: #ff004d;
+        }
+      }
+
+      .heading {
+        display: block;
+        margin: 0.5em 0;
+        font-size: 3rem;
+        text-align: center;
+      }
+
+      a:hover,
+      a:focus,
+      a:active {
+        filter: brightness(1.1) saturate(1.5);
+      }
+
+      .timeAgo {
+        font-size: 0.9em;
+      }
+      .timeAgo::before {
+        content: '✨ ';
+        font-size: 0.9em;
+      }
+
+      .languageCode::before {
+        content: '<> ';
+        color: #a88bcb;
+        font-size: 0.9em;
+      }
+
+      .yearsLearning::before {
+        content: '📖 ';
+        vertical-align: -5px;
+      }
+      .linkWebsite::before {
+        content: '➿ ';
+        vertical-align: -5px;
+      }
+    </style>
+  </body>
+</html>

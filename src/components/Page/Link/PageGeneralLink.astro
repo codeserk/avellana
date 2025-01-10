@@ -1,0 +1,49 @@
+---
+import ProgressBar from '~/components/ProgressBar.astro'
+import ReferencesList from '~/components/ReferencesList.astro'
+import {
+  getEntryCollectionConfig,
+  getEntryCreatedAt,
+  getEntrySummaryContent,
+  getReferencesForEntry,
+  type Entry,
+} from '~/utils/content'
+import PageLink from '../PageLink.astro'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat)
+
+interface Props {
+  readonly item: Entry
+}
+
+const { item } = Astro.props
+const config = getEntryCollectionConfig(item)
+const references = await getReferencesForEntry(item, config.referencesInLink)
+const summary = await getEntrySummaryContent(item, false)
+const createdAt = getEntryCreatedAt(item)
+---
+
+<PageLink
+  title={item.data.name}
+  link={`/${item.collection}/${item.slug}`}
+  image={item.data.featuredImage}
+  summary={summary}
+>
+  {item.data.status && item.data.progress && <ProgressBar text={item.data.status} percent={item.data.progress} />}
+  {item.data.status && item.data.knowledge && <ProgressBar text={item.data.status} percent={item.data.knowledge} />}
+  <ReferencesList references={references} block />
+
+  {item.data.yearsLearning && <span class="yearsLearning">{item.data.yearsLearning} year(s)</span>}
+  {config.showCreatedAt && createdAt && <span class={'timeAgo'}>{dayjs(createdAt).format('LL')}</span>}
+</PageLink>
+
+<style>
+  .yearsLearning {
+    text-align: left;
+  }
+  .timeAgo {
+    text-align: right;
+  }
+</style>

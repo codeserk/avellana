@@ -1,0 +1,27 @@
+---
+import type { ContainerLayout } from '../Container.astro'
+import Container from '../Container.astro'
+
+interface Props {
+  readonly layout?: ContainerLayout
+  readonly remarkFirstParagraph?: boolean
+}
+
+const { layout = 'one-column', remarkFirstParagraph } = Astro.props
+---
+
+<Container layout={layout}>
+  <div class:list={['PageContent content', { 'remark-first-paragraph': remarkFirstParagraph }]}>
+    <slot />
+  </div>
+
+  <slot slot="right" name="right" />
+</Container>
+
+<style>
+  @media (max-width: 850px) {
+    .PageContent {
+      margin-bottom: 1em;
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+{
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "astro",
+    "md",
+    "mdx",
+    "markdown",
+    "typescript",
+    "typescriptreact"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "Swiper"
+  ],
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///Users/codeserk/Projects/codeserk/website-astro/.github/workflows/deploy.yaml"
+  }
+}

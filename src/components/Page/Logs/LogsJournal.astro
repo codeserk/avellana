@@ -1,0 +1,93 @@
+---
+import Container from '~/components/Container.astro'
+import { getAllLogEntries, groupEntryLogsIntoJournalBlocks, sortEntries } from '~/utils/content'
+import PageReducedLink from '../Link/PageReducedLink.astro'
+import PageLog from './PageLog.astro'
+
+interface Props {
+  readonly combineDates?: boolean
+  readonly max?: number
+}
+
+const { combineDates, max } = Astro.props
+
+const logs = await sortEntries(await getAllLogEntries())
+const journalBlocks = await groupEntryLogsIntoJournalBlocks(logs, max)
+---
+
+{
+  journalBlocks.map((block) => (
+    <>
+      <Container layout="two-columns">
+        {!combineDates ? (
+          <div class="content">
+            {block.newYear && <h2>{block.year}</h2>}
+            {block.newMonth && <h3>{block.month}</h3>}
+          </div>
+        ) : (
+          <div class="content">
+            {(block.newYear || block.newMonth) && (
+              <h3>
+                {block.month}, {block.year}
+              </h3>
+            )}
+          </div>
+        )}
+      </Container>
+
+      <Container layout="left-aside">
+        <div class="page-container" slot="left">
+          <PageReducedLink item={block.entry} />
+        </div>
+
+        <div class="logs-container">
+          {block.logs.map((it) => (
+            <PageLog entry={it} heading="h5" />
+          ))}
+        </div>
+      </Container>
+    </>
+  ))
+}
+
+<style>
+  .content {
+    margin-bottom: 2em;
+  }
+
+  .logs-container {
+    margin-bottom: -20px;
+
+    .PageLog {
+      padding-bottom: 3em;
+    }
+
+    .PageLog:last-of-type {
+      padding-bottom: 5em;
+    }
+  }
+
+  .page-container {
+    margin-top: 10px;
+    .PageLink {
+      margin: 20px 0 0 0 !important;
+
+      width: 300px;
+
+      .titleContainer .title {
+        font-size: 1.5rem;
+      }
+
+      img {
+        max-width: 200px;
+        max-height: 200px;
+      }
+    }
+
+    @media (max-width: 850px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+</style>

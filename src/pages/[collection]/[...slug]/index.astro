@@ -1,0 +1,113 @@
+---
+import { getCollection, type AnyEntryMap } from 'astro:content'
+import ContentMarkdown from '~/components/Content/ContentMarkdown.astro'
+import AstroGallery from '~/components/Content/Gallery.astro'
+import Image from '~/components/Content/Image.astro'
+import Link from '~/components/Content/Link.astro'
+import PageGeneralLink from '~/components/Page/Link/PageGeneralLink.astro'
+import PageLogs from '~/components/Page/Logs/PageLogs.astro'
+import PageContainer from '~/components/Page/PageContainer.astro'
+import PageContent from '~/components/Page/PageContent.astro'
+import PageHeader from '~/components/Page/PageHeader.astro'
+import PageLinksGrid from '~/components/Page/PageLinksGrid.astro'
+import PageMeta from '~/components/Page/PageMeta.astro'
+import PageNearEntries from '~/components/Page/PageNearEntries.astro'
+import Layout from '../../../layouts/Layout.astro'
+import {
+  getEntryBreadcrumbs,
+  getEntryCollectionConfig,
+  getEntryCreatedAt,
+  getEntryGalleryImages,
+  getEntryImage,
+  getEntryRenderContent,
+  getEntrySummary,
+  getEntrySummaryContent,
+  getReferencesForEntry,
+} from '../../../utils/content'
+
+export async function getStaticPaths() {
+  const COLLECTIONS = ['blog'] satisfies (keyof AnyEntryMap)[]
+
+  const data = await Promise.all(
+    COLLECTIONS.map(async (collection) => ({
+      collection,
+      entries: await getCollection(collection),
+    })),
+  )
+
+  const result = data.flatMap(({ collection, entries }) =>
+    entries?.map((entry: any) => ({
+      params: { collection, slug: entry.slug },
+      props: { collection, entry },
+    })),
+  )
+
+  return result
+}
+
+const { collection, entry } = Astro.props
+const { Content } = await getEntryRenderContent(entry)
+
+const config = getEntryCollectionConfig(entry)
+const image = await getEntryImage(entry)
+const galleryImages = await getEntryGalleryImages(entry)
+const references = await getReferencesForEntry(entry, config.referencesInPage)
+const articles = await getReferencesForEntry(entry, ['blog'])
+const summary = await getEntrySummary(entry, false)
+const summaryContent = await getEntrySummaryContent(entry)
+const breadcrumbs = getEntryBreadcrumbs(entry)
+const createdAt = getEntryCreatedAt(entry)
+---
+
+<Layout full overlay seo={{ title: entry.data.name, breadcrumbs, description: summary, image: image?.src }}>
+  <PageContainer overlay>
+    <PageHeader
+      layout="two-columns"
+      title={entry.data.name}
+      breadcrumbs={breadcrumbs}
+      image={image}
+      imageType="bordered md"
+    />
+
+    <PageContent layout="two-columns" remarkFirstParagraph>
+      {
+        (references.length > 0 || createdAt || image) && (
+          <div slot="right">
+            <PageMeta entry={entry} />
+          </div>
+        )
+      }
+      {
+        summaryContent && (
+          <div class="summary">
+            <ContentMarkdown content={summaryContent} />
+          </div>
+        )
+      }
+      <Content components={{ a: Link, img: Image }} />
+    </PageContent>
+
+    <AstroGallery items={galleryImages} />
+
+    <aside>
+      <PageNearEntries collection={collection} entry={entry} />
+      <PageLogs collection={collection} entry={entry} />
+
+      <PageLinksGrid header={{ title: 'Blog 📺', link: '/blog' }} links={articles} component={PageGeneralLink} />
+    </aside>
+  </PageContainer>
+</Layout>
+
+<style>
+  .summary {
+    padding-left: 1em;
+    border-left: 8px solid white;
+  }
+
+  aside {
+    margin-top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 92px;
+  }
+</style>
